@@ -1,9 +1,11 @@
 ## Задание 1: Создайте новый граф, добавьте в него два BashOperator, первый должен выводить на экран сообщение “Hello from Airflow”, второй должен брать код из bash файла. Создайте bash файл который будет выводить сообщение “Hello from Airflow bash script processer.” Создайте последовательную связь между первым и вторым оператором. ##
 # Добавьте между первым и вторым операторами еще один BashOperator который будет заканчивать свою работу в статусе skipped.##
-
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.python_operator import PythonOperator
+
+
 
 dag = DAG( 'hello_world' , description= 'Hello World DAG' ,
 schedule_interval= '0 12 * * *' ,
