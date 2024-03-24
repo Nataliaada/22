@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from airflow import DAG
-from airflow.operators import BashOperator,PythonOperator
+from airflow.operators.bash import BashOperator
 
 dag = DAG( 'hello_world' , description= 'Hello World DAG' ,
 schedule_interval= '0 12 * * *' ,
