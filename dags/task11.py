@@ -2,7 +2,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators import BashOperator,PythonOperator
 
-dag = DAG( 'hello_world' , description= 'Hello World DAG' ,
+dag = DAG( 'hello_world1' , description= 'Hello World DAG' ,
 schedule_interval= '0 12 * * *' ,
 start_date=datetime( 2023 , 1 , 1
 ), catchup= False )
