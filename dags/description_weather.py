@@ -46,8 +46,8 @@ task3 = SimpleHttpOperator(
 )
 
 task4 = PythonOperator( 
- task_id = 'print weather'
- python_callable=print weather,
+ task_id = 'print_weather',
+ python_callable=print_weather,
  provide_context=True,
  dag=dag
 )
