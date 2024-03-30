@@ -26,17 +26,17 @@ print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {da
 dag = DAG(dag_id='get_weather', default_args=default_args, schedule_interval=None)
  taskl = BashOperator(
  task_id ='print_random num bash',
- bash_command = 'echo $((RANDOM % 100))', 
+ bash_command= 'echo $((RANDOM % 100))', 
  dag=dag
 )
 
-task2 = Python0perator( 
+task2 = PythonOperator( 
  task_id ='print_random_square_num', 
  python_callable=random_square_print,
  dag=dag
 )
 
-task3 = SimpleHttp0perator( 
+task3 = SimpleHttpOperator( 
  task_id='get weather', 
  method='GET',
  http_conn_id='goweather_api',
@@ -45,7 +45,7 @@ task3 = SimpleHttp0perator(
  dag=dag
 )
 
-task4 = Python0perator( 
+task4 = PythonOperator( 
  task id = 'print weather'
  python callable=print weather,
  provide context=True,
