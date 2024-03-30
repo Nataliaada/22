@@ -23,7 +23,7 @@ default_args = {
 }
 
 dag = DAG(
-    dag_id='get_temp_from_openweather1',
+    dag_id='get_temp_from_openweather',
     default_args=default_args,
     schedule_interval=None
 )
