@@ -14,7 +14,7 @@ default_args = {
 
 def random_square_print():
 num = random.randint(1, 100)
-res = num ** 2
+res = num**2
 print(f"Original number = {num}, Squared number= {res}.")
 
 
