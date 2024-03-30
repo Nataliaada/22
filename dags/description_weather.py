@@ -18,7 +18,7 @@ def choosing_description_weather(ti):
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2024, 3, 12),
+    'start_date': datetime(2024, 3, 30),
     'retries': 1
 }
 
