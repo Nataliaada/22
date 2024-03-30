@@ -1,7 +1,7 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from random import randint
+from airflow.operators.python_operator import PythonOperator 
+import random 
 
 def generate_and_square_number():
     random_number = random.randint(1, 100)
