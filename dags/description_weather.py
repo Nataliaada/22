@@ -1,62 +1,55 @@
-from airflow import DAG
 from datetime import datetime
-from airflow.operators.python import BranchPythonOperator, PythonOperator
-from airflow.providers.http.operators.http import HttpOperator
-from airflow.models import Variable
+from airflow import DAG
+from airflow.operators.bash operator import BashOperator 
+from airflow.operators.python_operator import Python0perator 
+from airflow.operators.http_operator import SimpleHttp0perator 
+import random 
+import json
+
+default args = {
+'owner': 'airflow',
+'start_date': datetime(2024, 3, 11), 
+'retries': 1 
+} 
+
+def random_square_print():
+num = random.randint(1, 100)
+res = num ** 2
+print(f"Original number = {num}, Squared number= {res}.")
 
 
-API_KEY = Variable.get('secret_key')
-URL = f'/data/2.5/weather?q=Moscow,ru&exclude=current&appid={API_KEY}&units=metric'
-
-
-def choosing_description_weather(ti):
-    current_temp = ti.xcom_pull(task_ids='get_temperature')
-    if current_temp > 15:
-        return 'warm_branch'
-    return 'cold_branch'
-
-
-default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2024, 3, 30),
-    'retries': 1
-}
-
-dag = DAG(
-    dag_id='get_temp_from_openweather',
-    default_args=default_args,
-    schedule_interval=None
+def print weather(**kwargs): 
+response = kwargs['ti'].xcom_pull(key=None, task_ids='get_weather') 
+data = json. loads(response)
+print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
+                                                                              
+dag = DAG(dag_id='get_weather', default_args=default_args, schedule_interval=None)
+ taskl = BashOperator(
+ task_id ='print_random num bash',
+ bash_command = 'echo $((RANDOM % 100))', 
+ dag=dag
 )
 
-get_response = HttpOperator(
-    task_id='get_temperature',
-    method='GET',
-    http_conn_id='openweather',
-    endpoint=URL,
-    response_filter=lambda response: response.json()["main"]["temp"],
-    headers={},
-    dag=dag
+task2 = Python0perator( 
+ task_id ='print_random_square_num', 
+ python_callable=random_square_print,
+ dag=dag
 )
 
-choosing_description = BranchPythonOperator(
-    task_id='choosing_result',
-    python_callable=choosing_description_weather,
-    dag=dag
+task3 = SimpleHttp0perator( 
+ task_id='get weather', 
+ method='GET',
+ http_conn_id='goweather_api',
+ endpoint='/weather/Sankt-Petersburg', 
+ headers = (),
+ dag=dag
 )
 
-warm_branch_task = PythonOperator(
-    task_id='warm_branch',
-    python_callable=lambda ti: print(f'ТЕПЛО: {ti.xcom_pull(task_ids="get_temperature")}°C'),
-    dag=dag
+task4 = Python0perator( 
+ task id = 'print weather'
+ python callable=print weather,
+ provide context=True,
+ dag=dag
 )
+task1 >> task2 >> task3 >> task4
 
-cold_branch_task = PythonOperator(
-    task_id='cold_branch',
-    python_callable=lambda ti: print(f'ХОЛОДНО: {ti.xcom_pull(task_ids="get_temperature")}°C'),
-    dag=dag
-)
-
-
-get_response >> choosing_description
-choosing_description >> warm_branch_task
-choosing_description >> cold_branch_task
