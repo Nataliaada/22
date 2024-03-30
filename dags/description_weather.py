@@ -23,9 +23,12 @@ def print_weather(**kwargs):
   data = json. loads(response)
   print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
                                                                               
-dag = DAG(dag_id='get_weather', default_args=default_args, schedule_interval=None)
- taskl = BashOperator(
- task_id ='print_random num bash',
+dag = DAG(dag_id='get_weather',
+          default_args=default_args, 
+          schedule_interval=None)
+
+task1 = BashOperator(
+ task_id ='print_random_num_bash',
  bash_command = 'echo $((RANDOM % 100))', 
  dag=dag
 )
@@ -37,7 +40,7 @@ task2 = PythonOperator(
 )
 
 task3 = SimpleHttpOperator( 
- task_id='get weather', 
+ task_id='get_weather', 
  method='GET',
  http_conn_id='goweather_api',
  endpoint='/weather/Sankt-Petersburg', 
