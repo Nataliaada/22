@@ -1,8 +1,8 @@
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash operator import BashOperator 
-from airflow.operators.python_operator import Python0perator 
-from airflow.operators.http_operator import SimpleHttp0perator 
+from airflow.operators.python_operator import PythonOperator 
+from airflow.operators.http_operator import SimpleHttpOperator 
 import random 
 import json
 
