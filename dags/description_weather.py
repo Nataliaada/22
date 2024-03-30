@@ -19,9 +19,9 @@ def random_square_print():
 
 
 def print_weather(**kwargs): 
-response = kwargs['ti'].xcom_pull(key=None, task_ids='get_weather') 
-data = json. loads(response)
-print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
+  response = kwargs['ti'].xcom_pull(key=None, task_ids='get_weather') 
+  data = json. loads(response)
+  print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
                                                                               
 dag = DAG(dag_id='get_weather', default_args=default_args, schedule_interval=None)
  taskl = BashOperator(
