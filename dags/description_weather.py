@@ -6,7 +6,7 @@ from airflow.operators.http_operator import SimpleHttpOperator
 import random 
 import json
 
-default args = {
+default_args = {
 'owner': 'airflow',
 'start_date': datetime(2024, 3, 11), 
 'retries': 1 
@@ -18,7 +18,7 @@ res = num ** 2
 print(f"Original number = {num}, Squared number= {res}.")
 
 
-def print weather(**kwargs): 
+def print_weather(**kwargs): 
 response = kwargs['ti'].xcom_pull(key=None, task_ids='get_weather') 
 data = json. loads(response)
 print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
@@ -26,7 +26,7 @@ print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {da
 dag = DAG(dag_id='get_weather', default_args=default_args, schedule_interval=None)
  taskl = BashOperator(
  task_id ='print_random num bash',
- bash_command= 'echo $((RANDOM % 100))', 
+ bash_command = 'echo $((RANDOM % 100))', 
  dag=dag
 )
 
@@ -46,9 +46,9 @@ task3 = SimpleHttpOperator(
 )
 
 task4 = PythonOperator( 
- task id = 'print weather'
- python callable=print weather,
- provide context=True,
+ task_id = 'print weather'
+ python_callable=print weather,
+ provide_context=True,
  dag=dag
 )
 task1 >> task2 >> task3 >> task4
