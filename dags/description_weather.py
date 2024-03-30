@@ -1,6 +1,6 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.bash operator import BashOperator 
+from airflow.operators.bash_operator import BashOperator 
 from airflow.operators.python_operator import PythonOperator 
 from airflow.operators.http_operator import SimpleHttpOperator 
 import random 
