@@ -5,7 +5,7 @@ from airflow.providers.http.operators.http import HttpOperator
 from airflow.models import Variable
 
 
-API_KEY = Variable.get('secret_openweather_key')
+API_KEY = Variable.get('secret_key')
 URL = f'/data/2.5/weather?q=Moscow,ru&exclude=current&appid={API_KEY}&units=metric'
 
 
