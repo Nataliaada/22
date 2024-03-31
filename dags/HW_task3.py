@@ -24,8 +24,9 @@ def print_weather(**kwargs):
   print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
                                                                               
 dag = DAG(dag_id='get_weather',
-          default_args=default_args, 
-          schedule_interval=None)
+          default_args=default_args,
+          schedule_interval= '0 12 * * *' 
+          )
 
 task1 = BashOperator(
  task_id ='print_random_num_bash',
