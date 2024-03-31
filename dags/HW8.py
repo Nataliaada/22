@@ -15,7 +15,7 @@ dag = DAG(
     'load_files_dag',
     description='DAG for loading CSV files',
     schedule_interval='@once',
-    start_date=datetime(2024, 03, 31),
+    start_date=datetime(2024, 3, 31),
 )
 
 load_files_operator = PythonOperator(
