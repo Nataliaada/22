@@ -31,11 +31,10 @@ ti.xcom_push(key="temperature_yandex", value=temperature_yandex)
 
 get_weather = PythonOperator(task_id = "get_weather_data",python_callable=get_weather_data,dag = sem8dag)
 
-
 send_tg_message = TelegramOperator(
 task_id='send_telega',
-token="7021300526:AAFrqu_kbsOu3ym9R6DntNGKtjo9RZDL-R0",
-chat_id=454619374,
+token="7191996568:AAHo61BtPMh1U5Ldyv8DxTGv2KOTLdaH9tU",
+chat_id=1211274716,
 text='Температура в Лондоне по версии Openweather: \
 {{ ti.xcom_pull(key="temperature_openweather", task_ids="get_weather_data") }}\n \
 Температура в Лондоне по версии Yandex: \
