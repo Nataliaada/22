@@ -24,7 +24,7 @@ def WeatherETL():
         text='Weather in Moscow \nYandex: ' + "{{ ti.xcom_pull(task_ids=['yandex_weather'], key='weather')[0]}}" + " degrees" +
              "\nOpen weather: " + "{{ ti.xcom_pull(task_ids=['open_weather'], key='weather')[0]}}" + " degrees",
     )
-https://api.telegram.org/bot7191996568:AAHo61BtPMh1U5Ldyv8DxTGv2KOTLdaH9tU/getUpdates
+
     @task(task_id='yandex_weather')
     def get_yandex_weather(**kwargs):
         ti = kwargs['ti']
