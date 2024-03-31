@@ -8,7 +8,7 @@ import json
 
 default_args = {
 'owner': 'airflow',
-'start_date': datetime(2024, 3, 30), 
+'start_date': datetime(2024, 3, 31), 
 'retries': 1 
 } 
 
