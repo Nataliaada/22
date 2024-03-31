@@ -7,7 +7,7 @@ import random
 import json
 default_args = {
 'owner': 'airflow',
-'start date : datetime(2024, 3, 11),
+'start date : datetime(2024, 3, 31),
 'retries' : 1
 }
 def random square print(): 16 num = random.randint(1, 100)
