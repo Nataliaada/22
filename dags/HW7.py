@@ -1,8 +1,8 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.bash operator import Bash0perator
-from airflow.operators.python operator import Python0perator
-from airflow.operators.http operator import SimpleHttp0perator
+from airflow.operators.bash_operator import Bash0perator
+from airflow.operators.python_operator import Python0perator
+from airflow.operators.http_operator import SimpleHttp0perator
 import random
 import json
 default_args =
@@ -17,7 +17,7 @@ def print weather(**kwargs):
     response = kwargs['ti'].xcom_pull(key=None, task_ids='get_weather')
     data = json. loads(response)
 def print weather(**kwargs):
-    response = kwargs['ti'].xcom pull(key=None, task_ids='get weather') data = json. loads(response)
+    response = kwargs['ti'].xcom pull(key=None, task_ids='get_weather') data = json. loads(response)
     print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind
 dag = DAG(dag id='get weather', default args=defaultargs, schedule interval=None)
 task1 = Bash0perator(
