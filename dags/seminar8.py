@@ -19,7 +19,7 @@ def WeatherETL():
     send_message_telegram_task = TelegramOperator(
         task_id='send_message_telegram',
         telegram_conn_id='tg_main',
-        token= '7191996568:AAHo61BtPMh1U5Ldyv8DxTGv2KOTLdaH9tU'
+        token= '7191996568:AAHo61BtPMh1U5Ldyv8DxTGv2KOTLdaH9tU',
         chat_id='-1211274716',
         text='Weather in Moscow \nYandex: ' + "{{ ti.xcom_pull(task_ids=['yandex_weather'], key='weather')[0]}}" + " degrees" +
              "\nOpen weather: " + "{{ ti.xcom_pull(task_ids=['open_weather'], key='weather')[0]}}" + " degrees",
