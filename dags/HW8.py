@@ -14,7 +14,7 @@ def load_files():
 dag = DAG(
     'load_files_dag',
     description='DAG for loading CSV files',
-    schedule_interval='@once',
+    schedule_interval='@daily',
     start_date=datetime(2024, 3, 31),
 )
 
