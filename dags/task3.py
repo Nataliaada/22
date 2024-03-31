@@ -6,7 +6,7 @@ def print_hello ():
 def skipp():
     return 99
 
-dag = DAG( 'hello_world' , description= 'Hello World DAG' ,
+dag = DAG( 'hello_world3' , description= 'Hello World DAG' ,
 schedule_interval= '0 12 * * *' ,
 start_date=datetime( 2023 , 1 , 1
 ), catchup= False )
