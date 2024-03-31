@@ -5,9 +5,9 @@ import pandas as pd
 
 def load_files():
     # Здесь код для загрузки файлов boking.csv, client.csv и hotel.csv
-    boking_df = pd.read_csv('boking.csv')
-    client_df = pd.read_csv('client.csv')
-    hotel_df = pd.read_csv('hotel.csv')
+    boking_df = pd.read_csv('https://github.com/Nataliaada/22/blob/main/dags/boking.csv')
+    client_df = pd.read_csv('https://github.com/Nataliaada/22/blob/main/dags/client.csv')
+    hotel_df = pd.read_csv('https://github.com/Nataliaada/22/blob/main/dags/hotel.csv')
     
     return boking_df, client_df, hotel_df
 
