@@ -1,42 +1,57 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators import BashOperator,PythonOperator
-def print_hello ():
-    return 'Hello world from Airflow DAG!'
-def skipp():
-    return 99
-dag = DAG( 'link' , description= 'Your are here DAG' ,
-schedule_interval= '0 12 * * *' ,
-start_date=datetime( 2023 , 1 , 1
-), catchup= False )
+from airflow.operators.bash_operator import BashOperator 
+from airflow.operators.python_operator import PythonOperator 
+from airflow.operators.http_operator import SimpleHttpOperator 
+import random 
+import json
+
+default_args = {
+'owner': 'airflow',
+'start_date': datetime(2024, 3, 30), 
+'retries': 1 
+} 
+
+def random_square_print():
+  num = random.randint(1, 100)
+  res = num**2
+  print(f"Original number = {num}, Squared number= {res}.")
 
 
-hello_file_operator = PythonOperator(task_id= 'hello_file_task' , 
-                                     bash_command= 'https://goweather.herokuapp.com/weather/"location', 
-                                     dag=dag)
-hello_operator >> hello_file_operator
+def print_weather(**kwargs): 
+  response = kwargs['ti'].xcom_pull(key=None, task_ids='get_weather') 
+  data = json. loads(response)
+  print(f"Weather in Sankt-Petersburg: temperature {data['temperature']}; wind {data['wind']}; description {data['description']}.")
+                                                                              
+dag = DAG(dag_id='get_weather',
+          default_args=default_args, 
+          schedule_interval=None)
 
-from datetime import datetime
-from airflow import DAG
-from airflow.operators.http_operator import SimpleHttpOperator
-
-# Замените 'your_location' на ваше реальное местоположение
-location = 'moscow'
-
-dag = DAG(
-    'weather_api_dag',
-    description='Send HTTP request to get weather data for a specific location',
-    schedule_interval='0 12 * * *',
-    start_date=datetime(2023, 1, 1),
-    catchup=False
+task1 = BashOperator(
+ task_id ='print_random_num_bash',
+ bash_command = 'echo $((RANDOM % 100))', 
+ dag=dag
 )
 
-get_weather_operator = SimpleHttpOperator(
-    task_id='get_weather_data',
-    http_conn_id='http_default',  # Используйте ваше соединение HTTP, если необходимо
-    method='GET',
-    endpoint=f'/weather/{location}',
-    headers={"Content-Type": "application/json"},
-    xcom_push=True,
-    dag=dag
+task2 = PythonOperator( 
+ task_id ='print_random_square_num', 
+ python_callable=random_square_print,
+ dag=dag
 )
+
+task3 = SimpleHttpOperator( 
+ task_id='get_weather', 
+ method='GET',
+ http_conn_id='goweather_api',
+ endpoint='/weather/Sankt-Petersburg', 
+ headers = (),
+ dag=dag
+)
+
+task4 = PythonOperator( 
+ task_id = 'print_weather',
+ python_callable=print_weather,
+ provide_context=True,
+ dag=dag
+)
+task1 >> task2 >> task3 >> task4
