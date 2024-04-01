@@ -6,14 +6,14 @@ def print_hello ():
 def skipp():
     return 99
 
-dag = DAG( 'hello_world3' , description= 'Hello World DAG' ,
+dag3 = DAG( 'hello_world3' , description= 'Hello World DAG' ,
 schedule_interval= '0 12 * * *' ,
 start_date=datetime( 2023 , 1 , 1
 ), catchup= False )
 
-hello_operator = PythonOperator(task_id= 'hello_task' , python_callable=print_hello, dag=dag)
-skipp_operator = PythonOperator(task_id= 'skip_task' , python_callable=skipp, dag=dag)
-hello_file_operator = BashOperator(task_id= 'hello_file_task' , bash_command='python/home/airflow/airflow/dags/scripts/file1.py', dag=dag)
+hello_operator = PythonOperator(task_id= 'hello_task' , python_callable=print_hello, dag=dag3)
+skipp_operator = PythonOperator(task_id= 'skip_task' , python_callable=skipp, dag=dag3)
+hello_file_operator = BashOperator(task_id= 'hello_file_task' , bash_command='/home/airflow/airflow/dags/scripts/file1.py', dag=dag3)
 
 
 task_http_sensor_check = HttpSensor(
