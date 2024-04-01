@@ -4,8 +4,8 @@ from datetime import datetime
 import pandas as pd
 from airflow.providers.postgres.operators.postgres import Postgres0perator
 
-def get data(file name):
-   return pd. read_csv(file_name)
+def get_data(file name):
+   return pd.read_csv(file_name)
 
 def transform data(**kwargs):
     booking = kwargs['ti'].xcom pull(task_ids='get_booking')
