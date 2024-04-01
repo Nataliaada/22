@@ -15,7 +15,7 @@ default_args = {
 }
 
 dag = DAG(
-    'data_processing_dag',
+    'data1_processing_dag',
     default_args=default_args,
     description='DAG for processing and loading data',
     schedule_interval=None
