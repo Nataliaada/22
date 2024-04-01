@@ -41,7 +41,7 @@ def transform_data(**kwargs):
     data = data[relevant_columns]
 
     # Saving transformed data to a new CSV file
-    output_file = 'https://github.com/Nataliaada/22/blob/main/dags/data_transformed.csv'
+    output_file = '/opt/airflow/dags/data_transformed.csv'
     data.to_csv(output_file, index=False)
 
     return output_file
@@ -58,21 +58,21 @@ def load_to_postgres(**kwargs):
 get_booking = PythonOperator(
     task_id='get_booking',
     python_callable=get_data,
-    op_args=['https://github.com/Nataliaada/22/blob/main/dags/booking.csv'],
+    op_args=['/opt/airflow/dags/booking.csv'],
     dag=dag
 )
 
 get_client = PythonOperator(
     task_id='get_client',
     python_callable=get_data,
-    op_args=['https://github.com/Nataliaada/22/blob/main/dags/client.csv'],
+    op_args=['/opt/airflow/dags/client.csv'],
     dag=dag
 )
 
 get_hotel = PythonOperator(
     task_id='get_hotel',
     python_callable=get_data,
-    op_args=['https://github.com/Nataliaada/22/blob/main/dags/hotel.csv'],
+    op_args=['/opt/airflow/dags/hotel.csv'],
     dag=dag
 )
 
