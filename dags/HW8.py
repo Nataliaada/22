@@ -7,7 +7,7 @@ from airflow.providers.postgres.operators.postgres import Postgres0perator
 def get_data(file_name):
    return pd.read_csv(file_name)
 
-def transform data(**kwargs):
+def transform_data(**kwargs):
     booking = kwargs['ti'].xcom pull(task_ids='get_booking')
     client = kwargs['ti'].xcom pull(task_ids='get_client')
     hotel = kwargs['ti'].xcom pull(task_ids='get_hotel')
