@@ -10,7 +10,7 @@ os.environ["no_proxy"]="*"
 @dag(
     dag_id="wether-tlegram",
     schedule="@once",
-    start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
+    start_date=pendulum.datetime(2024, 4, 1, tz="UTC"),
     catchup=False,
     dagrun_timeout=datetime.timedelta(minutes=60),
 )
@@ -21,7 +21,7 @@ def WetherETL():
         task_id='send_message_telegram',
         telegram_conn_id='telegram_default',
         token= '7191996568:AAHo61BtPMh1U5Ldyv8DxTGv2KOTLdaH9tU',
-        chat_id='1211274716',
+        chat_id=1211274716,
         text='Wether in Moscow \nYandex: ' + "{{ ti.xcom_pull(task_ids=['yandex_wether'],key='wether')[0]}}" + " degrees" +
         "\nOpen wether: " + "{{ ti.xcom_pull(task_ids=['open_wether'],key='open_wether')[0]}}" + " degrees",
     )
