@@ -58,21 +58,21 @@ def load_to_postgres(**kwargs):
 get_booking = PythonOperator(
     task_id='get_booking',
     python_callable=get_data,
-    op_args=['https://github.com/Nataliaada/22/blob/main/dags/HW_data8.py/booking.csv'],
+    op_args=['https://github.com/Nataliaada/22/blob/main/dags/booking.csv'],
     dag=dag
 )
 
 get_client = PythonOperator(
     task_id='get_client',
     python_callable=get_data,
-    op_args=['https://github.com/Nataliaada/22/blob/main/dags/HW_data8.py/client.csv'],
+    op_args=['https://github.com/Nataliaada/22/blob/main/dags/client.csv'],
     dag=dag
 )
 
 get_hotel = PythonOperator(
     task_id='get_hotel',
     python_callable=get_data,
-    op_args=['https://github.com/Nataliaada/22/blob/main/dags/HW_data8.py/hotel.csv'],
+    op_args=['https://github.com/Nataliaada/22/blob/main/dags/hotel.csv'],
     dag=dag
 )
 
