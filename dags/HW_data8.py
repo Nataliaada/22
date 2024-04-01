@@ -41,7 +41,7 @@ def transform_data(**kwargs):
     data = data[relevant_columns]
 
     # Saving transformed data to a new CSV file
-    output_file = '/home/zaur/airflow/data/data_transformed.csv'
+    output_file = 'https://github.com/Nataliaada/22/blob/main/dags/data_transformed.csv'
     data.to_csv(output_file, index=False)
 
     return output_file
