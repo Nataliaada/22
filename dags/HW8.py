@@ -47,7 +47,7 @@ create_table_postgres = Postgresoperator(task_id = "create_data_table",
             hotel_id INT, 
             name_hotel VARCHAR(50), 
             room_type VARCHAR(20), 
-            booking_cost FLOAT. 
+            booking_cost FLOAT,
             currency VARCHAR(5)); 
             ***,
           postgres_conn_id ='pg_conn',
