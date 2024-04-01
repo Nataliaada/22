@@ -2,62 +2,65 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 import pandas as pd
+from airflow.providers.postgres.operators.postgres import Postgres0perator
 
-def load_files():
-    # Здесь код для загрузки файлов boking.csv, client.csv и hotel.csv
-    boking_df = pd.read_csv('https://github.com/Nataliaada/22/blob/main/dags/boking.csv')
-    client_df = pd.read_csv('https://github.com/Nataliaada/22/blob/main/dags/client.csv')
-    hotel_df = pd.read_csv('https://github.com/Nataliaada/22/blob/main/dags/hotel.csv')
-    
-    return boking_df, client_df, hotel_df
+def get data(file name):
+   return pd. read_csv(file_name)
 
-dag = DAG(
-    'load_files_dag',
-    description='DAG for loading CSV files',
-    schedule_interval='@daily',
-    start_date=datetime(2024, 3, 31),
-)
+def transform data(**kwargs):
+    booking = kwargs['ti'].xcom pull(task_ids='get_booking')
+    client = kwargs['ti'].xcom pull(task_ids='get_client')
+    hotel = kwargs['ti'].xcom pull(task_ids='get_hotel')
+   
+    booking.dropna(inplace=True)
+    booking['booking_date'] = booking['booking_date'].str.replace('/)
+    hotel.dropna(inplace=True)
+    client.dropna(inplace=True)
+    client['age'] = client['age'].astype('int')
 
-load_files_operator = PythonOperator(
-    task_id='load_files_task',
-    python_callable=load_files,
-    dag=dag,
-)
-def transform_data(*args, **kwargs):
-    boking_df, client_df, hotel_df = kwargs['ti'].xcom_pull(task_ids=['load_files_task'])
+   data = booking.merge(client, on='client_id').merge(hotel, on='hotel_id')
+   data = booking.merge(client, on='client_id').merge(hotel, on='hotel_id')
+   data.rename(columns ('name_x': 'name_hotel', 'name_y': 'name_client', 'address': 'hotel_address'), inplace=True)
+   data=data[['booking_date', 'client_id', 'name_client', 'age', 'type', 'hotel_id', 'name_hotel', room_type", 'booking_cost', "currency]]
 
-    # Объединение таблиц
-    merged_df = pd.merge(boking_df, client_df, on='client_id')
-    merged_df = pd.merge(merged_df, hotel_df, on='hotel_id')
+   data.loc[data['currency'] == 'EUR', 'booking_cost'] = (data.loc[data['currency'] == 'EUR booking_cost'] 0.86).round(1) 30 data. loc[data['currency'] == 'EUR', 'currency'] = 'GBP'
+   if not os.path.exists('https://github.com/Nataliaada/22/edit/main/dags/data.csv'):
+        data.to_csv('https://github.com/Nataliaada/22/edit/main/dags/data.csv', index-False)
+   else:
+        os.remove('https://github.com/Nataliaada/22/edit/main/dags/data.csv')
+        data.to csv('https://github.com/Nataliaada/22/edit/main/dags/data.csv', index=False)
 
-    # Преобразование дат
-    merged_df['date'] = pd.to_datetime(merged_df['date'], format='%Y-%m-%d')
+dag DAG( 'data_processing_dag', description = 'DAG for processing and loading data",
+  schedule_interval-None, 
+        start_date=datetime(2024, 3, 26))
+get_booking Python0perator(task_id='get_booking', python_callable_get_data, op_args=['https://github.com/Nataliaada/22/edit/main/dags/booking.csv'1, dag-dag)
+get_client = PythonOperator(task_id'get_client', python callable get_data, op args ['https://github.com/Nataliaada/22/edit/main/dags/client.csv'], dag dag)
+get_hotel = Python0perator(task_id 'get hotel , python_callable get data, op args=['https://github.com/Nataliaada/22/edit/main/dags/hotel.csv'], dag-dag)
+transform_data_task = PythonOperator(task_id 'transform_data_task', python_callable_transform_data, dag=dag)
+create_table_postgres = Postgresoperator(task_id = "create_data_table", 
+            sql = *** CREATE TABLE IF NOT EXISTS data(
+            booking_date DATE,
+            client_id INT,
+            name_client VARCHAR(50),
+            age INT,
+            type VARCHAR(20), 
+            hotel_id INT, 
+            name_hotel VARCHAR(50), 
+            room_type VARCHAR(20), 
+            booking_cost FLOAT. 
+            currency VARCHAR(5)); 
+            ***,
+          postgres_conn_id ='pg_conn',
+          database='airflow') 
+load_to_postgres_db = PostgresOperator(task_id='load_to_postgres_db',
+postgres_conn_id ='pg_conn", 
+sql='''COPY data FROM 'https://github.com/Nataliaada/22/edit/main/dags/data.csv' WITH CSV HEADER;'''; 
+get_booking >> transform_data_task
+get_client >> transform_data_task 
+get_hotel >> transform_data_task
+transform_data_task >> create_table_postgres >> load_to_postgres_db
 
-    # Удаление невалидных колонок
-    merged_df.drop(columns=['invalid_column'], inplace=True)
+if__name__=="__mmain__";
+dag.cli{}
 
-    # Приведение валют к одной
-    # Например, конвертация в USD
 
-    return merged_df
-
-transform_data_operator = PythonOperator(
-    task_id='transform_data_task',
-    python_callable=transform_data,
-    provide_context=True,
-    dag=dag,
-)
-def load_to_database(*args, **kwargs):
-    merged_df = kwargs['ti'].xcom_pull(task_ids='transform_data_task')
-
-    # Здесь код для загрузки данных в базу данных
-
-load_to_db_operator = PythonOperator(
-    task_id='load_to_db_task',
-    python_callable=load_to_database,
-    provide_context=True,
-    dag=dag,
-)
-
-# Определение порядка выполнения операторов
-load_files_operator >> transform_data_operator >> load_to_db_operator
