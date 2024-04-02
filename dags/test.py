@@ -45,14 +45,19 @@ def transform_data(**kwargs):
     data.to_csv(output_file, index=False)
 
     return output_file
-
 def load_to_postgres(**kwargs):
-    file_path = kwargs['ti'].xcom_pull(task_ids='transform_data_task')
+    sql_query = """
+    COPY data FROM '/opt/airflow/dags/data_transformed.csv' WITH CSV HEADER;
+    """
+    task = PostgresOperator(
+        task_id='load_to_postgres',
+        sql=sql_query,
+        postgres_conn_id='postgres_conn',
+        autocommit=True,
+        dag=dag
+    )
+    return task.execute(context=kwargs)
 
-    with open(file_path, 'r') as f:
-        sql_query = f"COPY data FROM '{file_path}' WITH CSV HEADER"
-        # Execute SQL query to load data into Postgres
-        # Example: psycopg2.connect('database').execute(sql_query)
 
 # Task to get data from CSV files
 get_booking = PythonOperator(
