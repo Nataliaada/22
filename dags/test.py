@@ -16,7 +16,8 @@ def transform_data(**kwargs):
 dag = DAG('homework8',
           description='DAG for processing and loading data',
           schedule_interval=None,
-          start_date=datetime(2024, 3, 26))
+          start_date=datetime(2024, 3, 26),
+         catchup= False )
 
 get_booking = PythonOperator(task_id='get_booking', python_callable=get_data,
                             op_args=['/opt/airflow/dags/booking.csv'], dag=dag)
