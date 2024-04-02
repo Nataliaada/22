@@ -36,8 +36,8 @@ dag = DAG( 'data_processing_dag',
           schedule_interval=None, 
           start_date=datetime(2024, 3, 26))
 
-get_booking PythonOperator(task_id='get_booking', python_callable=get_data, op_args=['/opt/airflow/dags/booking.csv'], dag=dag)
-get_client = PythonOperator(task_id='get_client', python_callable=get_data, op_args ['/opt/airflow/dags/client.csv'], dag=dag)
+get_booking =PythonOperator(task_id='get_booking', python_callable=get_data, op_args=['/opt/airflow/dags/booking.csv'], dag=dag)
+get_client = PythonOperator(task_id='get_client', python_callable=get_data, op_args =['/opt/airflow/dags/client.csv'], dag=dag)
 get_hotel = PythonOperator(task_id ='get_hotel', python_callable=get_data, op_args=['/opt/airflow/dags/hotel.csv'], dag=dag)
 transform_data_task = PythonOperator(task_id='transform_data_task', python_callable=transform_data, dag=dag)
 create_table_postgres = PostgresOperator(task_id = "create_data_table", 
