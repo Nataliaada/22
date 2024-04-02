@@ -52,7 +52,7 @@ def load_to_postgres(**kwargs):
     with open('/opt/airflow/dags/data_transformed.csv', 'r') as f:
         sql_query = f"COPY data FROM '{'/opt/airflow/dags/data_transformed.csv'}' WITH CSV HEADER"
         # Execute SQL query to load data into Postgres
-        # Example: psycopg2.connect('database').execute(sql_query)
+        psycopg2.connect('airflow').execute(sql_query)
 
 # Task to get data from CSV files
 get_booking = PythonOperator(
