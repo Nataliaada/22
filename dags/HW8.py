@@ -63,7 +63,8 @@ get_client >> transform_data_task
 get_hotel >> transform_data_task
 transform_data_task >> create_table_postgres >> load_to_postgres_db
 
-if__name__=="__main__":
+   if __name__ == "__main__":
+   
      dag.cli()
 
 
