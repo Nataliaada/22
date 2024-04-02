@@ -8,9 +8,9 @@ def get_data(file_name):
    return pd.read_csv(file_name)
 
 def transform_data(**kwargs):
-    booking = kwargs['ti'].xcom pull(task_ids='get_booking')
-    client = kwargs['ti'].xcom pull(task_ids='get_client')
-    hotel = kwargs['ti'].xcom pull(task_ids='get_hotel')
+    booking = kwargs['ti'].xcom_pull(task_ids='get_booking')
+    client = kwargs['ti'].xcom_pull(task_ids='get_client')
+    hotel = kwargs['ti'].xcom_pull(task_ids='get_hotel')
    
     booking.dropna(inplace=True)
     booking['booking_date'] = booking['booking_date'].str.replace('/', '-')
