@@ -13,14 +13,14 @@ def transform_data(**kwargs):
     hotel = kwargs['ti'].xcom pull(task_ids='get_hotel')
    
     booking.dropna(inplace=True)
-    booking['booking_date'] = booking['booking_date'].str.replace('/)
+    booking['booking_date'] = booking['booking_date'].str.replace('/', '-')
     hotel.dropna(inplace=True)
     client.dropna(inplace=True)
     client['age'] = client['age'].astype('int')
 
    data = booking.merge(client, on='client_id').merge(hotel, on='hotel_id')
    data.rename(columns={'name_x': 'name_hotel', 'name_y': 'name_client', 'address': 'hotel_address'}, inplace=True)
-   data=data[['booking_date', 'client_id', 'name_client', 'age', 'type', 'hotel_id', 'name_hotel', room_type", 'booking_cost', "currency]]
+   data=data[['booking_date', 'client_id', 'name_client', 'age', 'type', 'hotel_id', 'name_hotel', 'room_type', 'booking_cost', 'currency']]
 
    data.loc[data['currency'] == 'EUR', 'booking_cost'] = (data.loc[data['currency'] == 'EUR', 'booking_cost']*0.86).round(1) 
    data.loc[data['currency'] == 'EUR', 'currency'] = 'GBP'
@@ -59,7 +59,7 @@ get_client >> transform_data_task
 get_hotel >> transform_data_task
 transform_data_task >> create_table_postgres >> load_to_postgres_db
 
-if__name__=="__mmain__":
+if__name__=="__main__":
 dag.cli()
 
 
