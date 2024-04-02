@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 import pandas as pd
+import os
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 
 def get_data(file_name):
@@ -37,7 +38,7 @@ dag = DAG( 'data_processing_dag',
 
 get_booking PythonOperator(task_id='get_booking', python_callable=get_data, op_args=['/opt/airflow/dags/booking.csv'], dag=dag)
 get_client = PythonOperator(task_id='get_client', python_callable=get_data, op_args ['/opt/airflow/dags/client.csv'], dag=dag)
-get_hotel = PythonOperator(task_id ='get hotel', python_callable=get_data, op_args=['/opt/airflow/dags/hotel.csv'], dag=dag)
+get_hotel = PythonOperator(task_id ='get_hotel', python_callable=get_data, op_args=['/opt/airflow/dags/hotel.csv'], dag=dag)
 transform_data_task = PythonOperator(task_id='transform_data_task', python_callable=transform_data, dag=dag)
 create_table_postgres = PostgresOperator(task_id = "create_data_table", 
             sql = """ CREATE TABLE IF NOT EXISTS data(
@@ -55,7 +56,8 @@ create_table_postgres = PostgresOperator(task_id = "create_data_table",
             postgres_conn_id ='pg_conn',
             database='airflow') 
 load_to_postgres_db = PostgresOperator(task_id='load_to_postgres_db', postgres_conn_id ='pg_conn', 
-         sql="""COPY data FROM '/opt/airflow/dags/data.csv' WITH CSV HEADER;"""; 
+         sql="""COPY data FROM '/opt/airflow/dags/data.csv' WITH CSV HEADER;""")
+        
 get_booking >> transform_data_task
 get_client >> transform_data_task 
 get_hotel >> transform_data_task
