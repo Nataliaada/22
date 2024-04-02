@@ -41,11 +41,11 @@ create_table_postgres = PostgresOperator(task_id="create_data_table",
              room_type VARCHAR(20),
              booking_cost FLOAT,
              currency VARCHAR(5));""",
-                                         postgres_conn_id='pg_conn',
+                                         postgres_conn_id='postgres_conn',
                                          database='airflow')
 
 load_to_postgres_db = PostgresOperator(task_id='load_to_postgres_db',
-                                       postgres_conn_id='pg_conn',
+                                       postgres_conn_id='postgres_conn',
                                        sql="""COPY data FROM '/opt/airflow/dags/data.csv' WITH CSV HEADER;""",
                                        dag=dag)
 
