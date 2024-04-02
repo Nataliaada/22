@@ -30,8 +30,10 @@ def transform_data(**kwargs):
         os.remove('/opt/airflow/dags/data.csv')
         data.to_csv('/opt/airflow/dags/data.csv', index=False)
 
-dag = DAG( 'data_processing_dag', description = 'DAG for processing and loading data",
-  schedule_interval=None, start_date=datetime(2024, 3, 26))
+dag = DAG( 'data_processing_dag', 
+          description = 'DAG for processing and loading data',
+          schedule_interval=None, 
+          start_date=datetime(2024, 3, 26))
 
 get_booking PythonOperator(task_id='get_booking', python_callable=get_data, op_args=['/opt/airflow/dags/booking.csv'], dag=dag)
 get_client = PythonOperator(task_id'get_client', python_callable=get_data, op_args ['/opt/airflow/dags/client.csv'], dag=dag)
