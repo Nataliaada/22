@@ -1,3 +1,5 @@
 apache-airflow-providers-google
 lxml
 beautifulsoup4
+pandas
+pip install apache-airflow-providers-telegram
